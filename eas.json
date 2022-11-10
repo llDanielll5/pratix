@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 2.6.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "development": {
+      "android": {
+        "serviceAccountKeyPath": "./googleKeys/SERVICE_ACCOUNT_GOOGLE_KEY",
+        "track": "internal"
+      }
+    }
+  }
+}
