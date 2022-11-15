@@ -5,13 +5,13 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
+      "distribution": "store",
       "android": {
         "buildType": "apk"
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "store"
     },
     "production": {
       "autoIncrement": true
@@ -21,7 +21,7 @@
     "development": {
       "android": {
         "serviceAccountKeyPath": "./googleKeys/SERVICE_ACCOUNT_GOOGLE_KEY",
-        "track": "internal"
+        "track": "production"
       }
     }
   }

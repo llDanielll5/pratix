@@ -2,10 +2,11 @@
   "expo": {
     "name": "Pratix",
     "slug": "Pratix",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "com.lldanielll5.Pratix",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -14,17 +15,20 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./googleKeys/ANDROID_GOOGLE_SERVICES.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.lldanielll5.Pratix",
-      "versionCode": 35,
+      "versionCode": 48,
       "permissions": [
         "com.android.vending.BILLING",
         "com.android.vending.INTERNET"
@@ -32,6 +36,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "@react-native-google-signin/google-signin"
+    ]
   }
 }

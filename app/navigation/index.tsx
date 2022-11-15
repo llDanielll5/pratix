@@ -20,7 +20,7 @@ const Routes = () => {
     setPersistLogin(true);
   });
 
-  const [isOnboarding, setIsOnboarding] = useState<boolean>(null);
+  const [isOnboarding, setIsOnboarding] = useState<boolean | null>(null);
 
   async function firstAccess() {
     const getFirstAccess = await AsyncStorage.getItem("@first_access");
@@ -48,8 +48,12 @@ const Routes = () => {
         {!isAuthenticated && (
           <Stack.Screen name="NotLogged" component={UserNotLogged} />
         )}
-        <Stack.Screen name="HomeTab" component={BottomTab} />
-        <Stack.Screen name="EditProfile" component={EditProfile} />
+        {isAuthenticated && (
+          <Stack.Screen name="HomeTab" component={BottomTab} />
+        )}
+        {isAuthenticated && (
+          <Stack.Screen name="EditProfile" component={EditProfile} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

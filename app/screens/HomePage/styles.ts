@@ -150,6 +150,10 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     alignSelf: "center",
   },
+  loadingText: {
+    fontFamily: "Poppins_500Medium_Italic",
+    textAlign: "center",
+  },
 });
 
 export default styles;

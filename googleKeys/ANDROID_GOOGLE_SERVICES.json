@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "959406397450",
+    "project_id": "pratix-4be53",
+    "storage_bucket": "pratix-4be53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959406397450:android:9e953962477b612341a7f3",
+        "android_client_info": {
+          "package_name": "com.lldanielll5.Pratix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959406397450-jk9ub3q996fg58hplbqash8aaddoan33.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lldanielll5.Pratix",
+            "certificate_hash": "d6d70cc7140d8858db320af254f222141190a800"
+          }
+        },
+        {
+          "client_id": "959406397450-ntvl7s1hgdthb975sh0v370s31a47t37.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lldanielll5.Pratix",
+            "certificate_hash": "c7a8fd774fbad99f875835eb1fc382877dc1a6bc"
+          }
+        },
+        {
+          "client_id": "959406397450-nrr5ne7pjua2t480th9d1fklktl3k5a3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6ebvAP5E-l7TJHM2JnOWqtUY1-TGJRFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959406397450-nrr5ne7pjua2t480th9d1fklktl3k5a3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Google from "expo-auth-session/providers/google";
-import { Modal, View } from "react-native";
+import * as AuthSession from "expo-auth-session";
+import { Modal, Text, View } from "react-native";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -30,6 +31,13 @@ import { Timestamp } from "firebase/firestore";
 import { UserType } from "../../../../../enum";
 import { User } from "../../../../../types";
 import { hasPremium } from "../../../../services/purchase";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+} from "@react-native-google-signin/google-signin";
+import "expo-dev-client";
+import { WEB_CLIENT_ID_FIREBASE } from "../../../../constants";
+import Loading from "../../../../components/Loading";
 
 const UserNotLogged = ({ navigation }: any) => {
   const { navigate } = navigation;
@@ -39,6 +47,7 @@ const UserNotLogged = ({ navigation }: any) => {
   const [hideLoginPassword, setHideLoginPassword] = useState(true);
   const [{ isAuthenticated }, setAuthStatus] = useRecoilState(AuthStatus);
   const [hideRegisterPassword, setHideRegisterPassword] = useState(true);
+  const [initializing, setInitializing] = useState(true);
   const setUserData = useSetRecoilState(UserData);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -170,14 +179,23 @@ const UserNotLogged = ({ navigation }: any) => {
     }
   }, [isAuthenticated]);
 
-  const [request, response, googlePromptLogin] = Google.useIdTokenAuthRequest({
-    clientId:
-      "959406397450-nrr5ne7pjua2t480th9d1fklktl3k5a3.apps.googleusercontent.com",
-    expoClientId:
-      "959406397450-nrr5ne7pjua2t480th9d1fklktl3k5a3.apps.googleusercontent.com",
-    webClientId:
-      "959406397450-nrr5ne7pjua2t480th9d1fklktl3k5a3.apps.googleusercontent.com",
+  GoogleSignin.configure({
+    webClientId: WEB_CLIENT_ID_FIREBASE,
+    offlineAccess: true,
   });
+
+  // useEffect(() => {
+  //   async function test() {
+  //     const isSignedIn = await GoogleSignin.getCurrentUser();
+  //     console.log(isSignedIn);
+  //   }
+  //   test();
+  // }, []);
+
+  async function onGoogleButtonPress() {
+    setLoading(true);
+    await GoogleLoginFirebase().catch(() => setLoading(false));
+  }
 
   async function handleLoginWithGoogleAccount(userResult: any) {
     storageUser({ ...userResult });
@@ -186,10 +204,10 @@ const UserNotLogged = ({ navigation }: any) => {
   }
 
   const GoogleLoginFirebase = async () => {
-    if (response?.type === "success") {
-      const { id_token } = response.params;
-      const auth = getAuth(app);
-      const credential = GoogleAuthProvider.credential(id_token);
+    setLoading(true);
+    const resultUser = await GoogleSignin.signIn();
+    const credential = GoogleAuthProvider.credential(resultUser?.idToken);
+    try {
       const result = await signInWithCredential(auth, credential);
       if (result?.user) {
         const hasUser = await getLoginGoogleInfos(result?.user?.uid);
@@ -197,22 +215,10 @@ const UserNotLogged = ({ navigation }: any) => {
           ? handleLoginWithGoogleAccount(hasUser)
           : createUserWithGoogleLogin(result);
       }
-    }
-  };
-
-  const handlePromptGoogleLogin: any = async () => {
-    try {
-      setLoading(true);
-      await googlePromptLogin();
     } catch (error) {
       setLoading(false);
-      console.log(error);
     }
   };
-
-  React.useEffect(() => {
-    GoogleLoginFirebase();
-  }, [response]);
 
   return (
     <View style={styles.notLoggedContainer}>
@@ -224,9 +230,8 @@ const UserNotLogged = ({ navigation }: any) => {
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
-        loading={loading}
         setModalRegister={setModalRegister}
-        loginGoogle={handlePromptGoogleLogin}
+        loginGoogle={onGoogleButtonPress}
       />
 
       <Modal
@@ -248,6 +253,17 @@ const UserNotLogged = ({ navigation }: any) => {
           setPassword={setPassword}
           setModalRegister={setModalRegister}
         />
+      </Modal>
+      <Modal visible={loading} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalRegister}>
+            <Loading size={50} isLoading style={{ height: 70 }} />
+            <Text style={styles.loadingText}>
+              Estamos autenticando você... Aguarde, isso pode demorar um
+              pouco...
+            </Text>
+          </View>
+        </View>
       </Modal>
     </View>
   );

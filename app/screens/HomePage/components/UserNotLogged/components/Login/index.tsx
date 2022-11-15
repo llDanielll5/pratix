@@ -5,6 +5,7 @@ import { Button, TextInput } from "react-native-paper";
 import Loading from "../../../../../../components/Loading";
 import colors from "../../../../../../constants/colors";
 import styles from "../../../../styles";
+import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 
 interface LoginProps {
   email: string;
@@ -13,10 +14,9 @@ interface LoginProps {
   setPassword: (password: string) => void;
   hideLoginPassword: boolean;
   setHideLoginPassword: (hideLoginPassword: boolean) => void;
-  loading: boolean;
   setModalRegister: (modalRegister: boolean) => void;
   handleLogin: (email: string, password: string) => void;
-  loginGoogle: () => Promise<AuthSessionResult>;
+  loginGoogle: () => Promise<void>;
 }
 
 const Login: React.FC<LoginProps> = (props) => {
@@ -29,7 +29,6 @@ const Login: React.FC<LoginProps> = (props) => {
     setHideLoginPassword,
     setModalRegister,
     handleLogin,
-    loading,
     loginGoogle,
   } = props;
   const HidePassword = (hide: any, setHide: any) => (
@@ -98,9 +97,6 @@ const Login: React.FC<LoginProps> = (props) => {
       >
         Entrar com Google
       </Button>
-      {loading && (
-        <Loading isLoading={loading} style={styles.loading} size={50} />
-      )}
 
       <View style={styles.notAccountContainer}>
         <Text style={styles.normalText}>Não tem conta na Pratix?</Text>

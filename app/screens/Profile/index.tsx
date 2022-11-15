@@ -18,6 +18,7 @@ import app from "../../firebase/base";
 import AuthStatus from "../../atom/AuthStatus";
 import Loading from "../../components/Loading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import ProfileHeader from "./ProfileHeader";
 
 export default function Profile({ navigation }: any) {
@@ -45,6 +46,7 @@ export default function Profile({ navigation }: any) {
 
   async function handleLogout() {
     setLoading(true);
+    await GoogleSignin.signOut();
     await auth
       .signOut()
       .then(() => {

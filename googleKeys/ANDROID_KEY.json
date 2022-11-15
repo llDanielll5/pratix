@@ -1,0 +1,9 @@
+{
+  "installed": {
+    "client_id": "959406397450-6i5r7a8ov0lk7v3mgeec6lqebeb7343p.apps.googleusercontent.com",
+    "project_id": "pratix-4be53",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
+  }
+}
