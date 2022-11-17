@@ -1,11 +1,9 @@
 import { AuthSessionResult } from "expo-auth-session";
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-import Loading from "../../../../../../components/Loading";
 import colors from "../../../../../../constants/colors";
 import styles from "../../../../styles";
-import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 
 interface LoginProps {
   email: string;
@@ -16,6 +14,7 @@ interface LoginProps {
   setHideLoginPassword: (hideLoginPassword: boolean) => void;
   setModalRegister: (modalRegister: boolean) => void;
   handleLogin: (email: string, password: string) => void;
+  forgotPassword: () => void;
   loginGoogle: () => Promise<void>;
 }
 
@@ -30,6 +29,7 @@ const Login: React.FC<LoginProps> = (props) => {
     setModalRegister,
     handleLogin,
     loginGoogle,
+    forgotPassword,
   } = props;
   const HidePassword = (hide: any, setHide: any) => (
     <TextInput.Icon
@@ -76,6 +76,21 @@ const Login: React.FC<LoginProps> = (props) => {
         activeUnderlineColor="black"
         right={HidePassword(hideLoginPassword, setHideLoginPassword)}
       />
+
+      <TouchableOpacity activeOpacity={0.5} onPress={forgotPassword}>
+        <Text
+          style={{
+            textDecorationLine: "underline",
+            color: colors.primary,
+            fontSize: 18,
+            textAlign: "right",
+            marginVertical: 8,
+            margin: 4,
+          }}
+        >
+          Esqueceu sua senha?
+        </Text>
+      </TouchableOpacity>
 
       <Button
         mode="contained"

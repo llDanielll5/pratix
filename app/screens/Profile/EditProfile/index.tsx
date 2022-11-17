@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
 import { Button, IconButton, TextInput } from "react-native-paper";
 import { useRecoilState } from "recoil";
 import UserData from "../../../atom/UserData";
 import Loading from "../../../components/Loading";
-import colors from "../../../constants/colors";
 import { updateUserInfos } from "../../../firebase/functions";
 import GetImage from "../../../utils/GetImage";
 import GetUserImage from "../../../utils/GetUserImage";
@@ -15,7 +14,7 @@ import styles from "./styles";
 export const TextInputEditTheme = {
   colors: {
     text: "black",
-    placeholder: colors.primary,
+    placeholder: "#50B9E9",
   },
 };
 
@@ -62,7 +61,7 @@ const EditProfile = ({ navigation }: any) => {
             />
             <IconButton
               icon="camera"
-              color={colors.primary}
+              color={"#50B9E9"}
               size={25}
               style={styles.cameraIcon}
             />
@@ -76,10 +75,10 @@ const EditProfile = ({ navigation }: any) => {
           mode="outlined"
           value={username}
           onChangeText={(text) => setUsername(text)}
-          underlineColor={colors.primary}
-          activeUnderlineColor={colors.primary}
-          outlineColor={colors.primary}
-          activeOutlineColor={colors.primary}
+          underlineColor={"#50B9E9"}
+          activeUnderlineColor={"#50B9E9"}
+          outlineColor={"#50B9E9"}
+          activeOutlineColor={"#50B9E9"}
           theme={TextInputEditTheme}
         />
 
@@ -89,10 +88,10 @@ const EditProfile = ({ navigation }: any) => {
           mode="outlined"
           value={phone}
           onChangeText={(text) => setPhone(text)}
-          underlineColor={colors.primary}
-          activeUnderlineColor={colors.primary}
-          outlineColor={colors.primary}
-          activeOutlineColor={colors.primary}
+          underlineColor={"#50B9E9"}
+          activeUnderlineColor={"#50B9E9"}
+          outlineColor={"#50B9E9"}
+          activeOutlineColor={"#50B9E9"}
           theme={TextInputEditTheme}
         />
 
@@ -104,7 +103,7 @@ const EditProfile = ({ navigation }: any) => {
         <Button
           mode="contained"
           onPress={updateUserInformations}
-          color={colors.primary}
+          color={"#50B9E9"}
           style={styles.button}
           labelStyle={styles.labelButtonStyle}
         >

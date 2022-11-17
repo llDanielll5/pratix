@@ -154,6 +154,23 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_500Medium_Italic",
     textAlign: "center",
   },
+  forgotText: {
+    fontSize: 20,
+    fontFamily: "Poppins_600SemiBold",
+    top: 2,
+    color: "#000",
+  },
+  forgotContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  buttonStyle: {
+    width: "80%",
+    marginVertical: 8,
+    alignSelf: "center",
+    borderRadius: 8,
+  },
 });
 
 export default styles;

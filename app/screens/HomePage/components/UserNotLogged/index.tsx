@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as Google from "expo-auth-session/providers/google";
-import * as AuthSession from "expo-auth-session";
-import { Modal, Text, View } from "react-native";
+import { Modal, Text, View, Alert } from "react-native";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithCredential,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   addNewUser,
@@ -24,6 +23,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import app from "../../../../firebase/base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { WEB_CLIENT_ID_FIREBASE } from "../../../../constants/index";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { SwitchRegisterErrors } from "../../../../utils/switchRegisterErrors";
 import { SwitchLoginErrors } from "../../../../utils/switchLoginErrors";
@@ -31,13 +31,9 @@ import { Timestamp } from "firebase/firestore";
 import { UserType } from "../../../../../enum";
 import { User } from "../../../../../types";
 import { hasPremium } from "../../../../services/purchase";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from "@react-native-google-signin/google-signin";
-import "expo-dev-client";
-import { WEB_CLIENT_ID_FIREBASE } from "../../../../constants";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import Loading from "../../../../components/Loading";
+import ForgotPasswordComponent from "./components/ForgotPassword";
 
 const UserNotLogged = ({ navigation }: any) => {
   const { navigate } = navigation;
@@ -47,7 +43,7 @@ const UserNotLogged = ({ navigation }: any) => {
   const [hideLoginPassword, setHideLoginPassword] = useState(true);
   const [{ isAuthenticated }, setAuthStatus] = useRecoilState(AuthStatus);
   const [hideRegisterPassword, setHideRegisterPassword] = useState(true);
-  const [initializing, setInitializing] = useState(true);
+  const [forgotPasswordModal, setForgotPasswordModal] = useState(false);
   const setUserData = useSetRecoilState(UserData);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -87,6 +83,7 @@ const UserNotLogged = ({ navigation }: any) => {
           }).then(() => {
             storageUser({ ...userValues, password: password });
             setUserData({ ...userValues });
+            setLoading(false);
             setAuthStatus({
               isAuthenticated: true,
               userType: userValues.usertype,
@@ -121,6 +118,7 @@ const UserNotLogged = ({ navigation }: any) => {
       const premium = await hasPremium();
       storageUser({ ...userResult, password: password });
       setUserData({ ...userResult });
+      setLoading(false);
       setAuthStatus({
         isAuthenticated: true,
         userType: premium ? UserType.PREMIUM : UserType.FREE,
@@ -160,6 +158,7 @@ const UserNotLogged = ({ navigation }: any) => {
         }).then(() => {
           storageUser({ ...userValues });
           setUserData({ ...userValues });
+          setLoading(false);
           setAuthStatus({
             isAuthenticated: true,
             userType: userValues.usertype,
@@ -173,10 +172,7 @@ const UserNotLogged = ({ navigation }: any) => {
   }
 
   useEffect(() => {
-    if (isAuthenticated) {
-      setLoading(false);
-      navigate("HomeTab");
-    }
+    if (isAuthenticated) navigate("HomeTab");
   }, [isAuthenticated]);
 
   GoogleSignin.configure({
@@ -200,6 +196,7 @@ const UserNotLogged = ({ navigation }: any) => {
   async function handleLoginWithGoogleAccount(userResult: any) {
     storageUser({ ...userResult });
     setUserData({ ...userResult });
+    setLoading(false);
     setAuthStatus({ isAuthenticated: true, userType: userResult.usertype });
   }
 
@@ -220,6 +217,34 @@ const UserNotLogged = ({ navigation }: any) => {
     }
   };
 
+  const toggleForgotModal = () => setForgotPasswordModal(!forgotPasswordModal);
+  async function resetPassword() {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        toggleForgotModal();
+        Alert.alert(
+          "Email enviado!",
+          `Email enviado com sucesso para: ${email}! Por favor, verifique sua caixa de entrada ou Spam!`
+        );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  }
+
+  const LoadingComponent = () => (
+    <View style={styles.modalContainer}>
+      <View style={styles.modalRegister}>
+        <Loading size={50} isLoading style={{ height: 70 }} />
+        <Text style={styles.loadingText}>
+          Estamos autenticando você... Aguarde, isso pode demorar um pouco...
+        </Text>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.notLoggedContainer}>
       <Login
@@ -232,6 +257,7 @@ const UserNotLogged = ({ navigation }: any) => {
         setPassword={setPassword}
         setModalRegister={setModalRegister}
         loginGoogle={onGoogleButtonPress}
+        forgotPassword={toggleForgotModal}
       />
 
       <Modal
@@ -255,15 +281,22 @@ const UserNotLogged = ({ navigation }: any) => {
         />
       </Modal>
       <Modal visible={loading} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalRegister}>
-            <Loading size={50} isLoading style={{ height: 70 }} />
-            <Text style={styles.loadingText}>
-              Estamos autenticando você... Aguarde, isso pode demorar um
-              pouco...
-            </Text>
-          </View>
-        </View>
+        <LoadingComponent />
+      </Modal>
+
+      <Modal
+        visible={forgotPasswordModal}
+        transparent={true}
+        animationType="fade"
+        onDismiss={toggleForgotModal}
+        onRequestClose={toggleForgotModal}
+      >
+        <ForgotPasswordComponent
+          email={email}
+          setEmail={setEmail}
+          handleForgotPassword={resetPassword}
+          toggleForgotModal={toggleForgotModal}
+        />
       </Modal>
     </View>
   );

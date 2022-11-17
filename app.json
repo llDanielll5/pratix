@@ -28,7 +28,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.lldanielll5.Pratix",
-      "versionCode": 48,
+      "versionCode": 53,
       "permissions": [
         "com.android.vending.BILLING",
         "com.android.vending.INTERNET"
